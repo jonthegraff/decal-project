@@ -1,0 +1,29 @@
+ok guys, so I talked to Dara a bit today, and I have a little more sense of purpose. For me, the hardest part that I think we have is to just set things up so the 'server' computer has an IP address we can refer to. Aside from that, it's not too bad.
+
+What I have been working on (everything you see from ls *sh) and expect to finish tomorrow (saturday 4/15) is the client-server communication, assuming that I do have the server's IP address to work with.
+
+     makey.sh # a mockery of a makefile for installation. but if someone can write the counterpart for macOS, it might be good enough for our purposes.
+
+     redirect-daemon.sh # This is the front-end interface to the server. It waits on port 10001 for incoming connections (this number is hardcoded into the clients). When a connection is made, it starts a netcat process on another port, which can handle one client, and tells the client to go to that port. The connection on that port is lasting and executes the appropriate action for each client command. This will also start up the multicasting vlc. Also creates directories used as our 'database', if they don't yet exist.
+
+     client.sh # connects by first heading over to port 10001, getting a new destination and then connecting on whichever port that happens to be. This will also start vlc in the appropriate way to recieve the music stream.
+
+     execute-commands.sh # this has a read loop and executes the appropriate action for every command that is entered.
+
+     clear-ports.sh # kills processes on ports 10001 and 10002. A side tool, shouldn't be needed for the main process.
+
+
+     TODO:
+	FIND OUT HOW TO GET AN IP FOR THE SERVER. this is a big one, and I have no idea how to do it. IF YOU FIGURE THIS OUT, YOU CAN BE DONE FOR THE WHOLE PROJECT.
+
+	FIND OUT HOW TO MAKE VLC BROADCAST AND RECIEVE. also a big one, I also have no idea yet, would also be your fair share of the project. You don't even need to implement it in the shell scripts, just report back on what the commands do, and also if we need any additional information for the communication, like ports or ip addresses or some other arcane whatever.
+
+	actually put those vlc commands into redirect-daemon and execute-commands.sh. shouldn't be a big deal once we know how they work.
+	
+	make redirect-daemon and client.sh handle their ports the way I described. Right now they all get clogged on the same port.
+
+	make execute-commands.sh pattern match the commands and actually execute the appropriate actions. Probably the playlist and such will be backed by text files.
+
+	make MacOSey.sh # how do you install vlc and netcat-traditional (actually only server needs netcat-traditional for the -e option, other machines can have other netcat versions)
+
+	test
