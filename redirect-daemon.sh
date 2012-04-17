@@ -11,9 +11,8 @@ fi
 kill `lsof -i :$DECALPORT | tail -n +2 | sed -e 's,[ \t][ \t]*, ,g' | cut -f2 -d' '` 2>/dev/null # clears junk on DECALPORT
 nc -d -l $DECALPORT | ./execute-commands.sh & # space for one user connection
 kill `lsof -i :10001 | tail -n +2 | sed -e 's,[ \t][ \t]*, ,g' | cut -f2 -d' '` 2>/dev/null # clears junk on port 10001
-echo "" > ~/aber/.keepgoing
-echo $DECALPORT | nc -l 10001 > ~/aber/.keepgoing #wait for more users
+clientresp=`echo $DECALPORT | nc -l 10001` #wait for more users
 export DECALPORT=$(expr $DECALPORT + 1) # further users will go on higher ports
-if [ `cat ~/aber/.keepgoing` ]; then
+if [ $clientresp ]; then
     $0
 fi
